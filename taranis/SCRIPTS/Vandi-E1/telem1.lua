@@ -528,7 +528,13 @@
 --FlightModes
 
 			local function Flight_modes()
+				
+				-- 20170607:vincent:remove stabilize mode
 				FmodeNr=getValue(208)+1
+				if FmodeNr==1 then
+					FmodeNr = 3
+				end
+
 				if FmodeNr<1 or FmodeNr>17 then
 					FmodeNr=13
 				end
@@ -540,19 +546,17 @@
 					last_flight_mode_play=(100*FlightMode[FmodeNr].Repeat)+getTime()
 
 					if apmarmed==1 then
-
-					FlightMode[last_flight_mode].Timer=model.getTimer(1).value
-					model.setTimer(1,{ mode=1, start=0, value= FlightMode[FmodeNr].Timer, countdownBeep=0, minuteBeep=0, persistent=1 })
+						FlightMode[last_flight_mode].Timer=model.getTimer(1).value
+						model.setTimer(1,{ mode=1, start=0, value= FlightMode[FmodeNr].Timer, countdownBeep=0, minuteBeep=0, persistent=1 })
 
 					else
-					model.setTimer(1,{ mode=0, start=0, value= FlightMode[FmodeNr].Timer, countdownBeep=0, minuteBeep=0, persistent=1 })
+						model.setTimer(1,{ mode=0, start=0, value= FlightMode[FmodeNr].Timer, countdownBeep=0, minuteBeep=0, persistent=1 })
 					end
  					
  					last_flight_mode=FmodeNr
 
 
-				elseif getTime()>last_flight_mode_play
-						then
+				elseif getTime()>last_flight_mode_play	then
 						playFile(FlightMode[FmodeNr].SoundActive1)
 						last_flight_mode_play=(100*FlightMode[FmodeNr].Repeat)+getTime()
 				end
@@ -565,7 +569,6 @@
 				for i=1,6 do
 					if getValue(i+99)>0 then
 						SwitchPos=i+99
-						Engaged=Switches[i].FlightNumber
 						break
 					end
 				end
